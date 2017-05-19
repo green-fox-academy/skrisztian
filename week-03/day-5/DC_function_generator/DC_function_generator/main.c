@@ -7,6 +7,7 @@
 
 #include "MCP4821_driver.h"
 #include "UART_driver.h"
+#include "ADC_driver.h"
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <stdio.h>
@@ -40,7 +41,7 @@ Output voltage minimum is 0V
 Output voltage maximum is 4.096V
 */
 
-void SystemInit() {
+int SystemInit() {
 
 	// Call the DAC driver init function
 	MCP4821_Init();
@@ -89,8 +90,6 @@ int main(void) {
 	char voltage_string[25];
 	float voltage;
 	uint16_t adc_data;
-
-
 	
     while (1) {
 		
@@ -99,7 +98,7 @@ int main(void) {
 		gets(voltage_string);
 		
 		// Convert string to float
-		float voltage = atof(voltage_string);
+		voltage = atof(voltage_string);
 		
 		// Set the voltage level on DAC
 		if (voltage >= 4.096) {
@@ -120,7 +119,6 @@ int main(void) {
 		
 		adc_data = ADC_Read();
 		printf("* ADC data: %d\r\n", adc_data);
-		
 		
 	    }
 }
