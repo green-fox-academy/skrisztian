@@ -66,9 +66,6 @@ int SystemInit() {
 	return 0;
 }
 
-
-
-
 int main(void) {
 	
 	// Don't forget to call the init function :)
