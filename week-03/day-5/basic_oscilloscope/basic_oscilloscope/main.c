@@ -16,17 +16,6 @@
 #endif
 #include <avr/delay.h>
 
-
-/*
-Set up the UART interface of the ATmega168PB
-Set up the ADC peripheral of the ATmega168PB
-Send data to the PC via serial port
-Send the data as a number (not as a string!) in tha main while loop
-Open the Data Visualizer Extension
-Set up the serial port
-Set up an Oscilloscope object with the serial port as the input
-*/
-
 int SystemInit(void) {
 	ADC_Init();
 	UART_Init();
@@ -34,8 +23,6 @@ int SystemInit(void) {
 	
 	return 0;
 }
-
-
 
 int main(void) {
 
@@ -63,9 +50,10 @@ int main(void) {
 		
 		// This scales up to 1023
 		// the other side can only receive up to 255
-		adc_data /= 4;
+
+		// Divide by 4
+		adc_data = adc_data >> 2;
 		
 		UART_SendCharacter(adc_data);
-		//UART_SendCharacter('v');
     }
 }
