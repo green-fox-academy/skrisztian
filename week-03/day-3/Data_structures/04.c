@@ -30,7 +30,7 @@ int sumGold(struct Pirate* array, int size) {
 
 float avgGold(struct Pirate* array, int size) {
 
-    // Sum the gold
+    // Average the gold
     float avg = 0;
     int sum = sumGold(array, size);
     avg = (float) sumGold(array, size) / (float) size;
@@ -38,7 +38,7 @@ float avgGold(struct Pirate* array, int size) {
     return avg;
 }
 
-int richestPirate(struct Pirate* array, int size) {
+char* richestPirate(struct Pirate* array, int size) {
     int max_gold = 0;
     int max_id = 0;
 
@@ -51,7 +51,8 @@ int richestPirate(struct Pirate* array, int size) {
         }
     }
 
-    return max_id;
+    return array[max_id].name;
+
 }
 
 int main() {
@@ -66,7 +67,7 @@ int main() {
 
     printf("All gold:\t%d\n", sumGold(pirates, 6));
     printf("Average gold:\t%f\n", avgGold(pirates, 6));
-    printf("Max gold:\t%s\n", pirates[richestPirate(pirates, 6)].name);
+    printf("Richest pirate:\t%s\n", richestPirate(pirates, 6));
 
     return 0;
 }
