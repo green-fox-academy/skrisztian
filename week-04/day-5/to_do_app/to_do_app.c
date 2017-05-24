@@ -1,8 +1,11 @@
 #include <string.h>
 #include <stdint.h>
+#include <stdlib.h>
+#include <stdio.h>
 #include "to_do_app.h"
 
-task_t *new_task(char *description, int desc_size, short priority){
+task_t *new_task(char *description, int desc_size, short priority)
+{
 
     // Create task in memory
     task_t* new_task = (task_t*) malloc(sizeof(task_t));
@@ -49,7 +52,7 @@ task_list_t *new_task_list(int max_count)
 {
     task_list_t *new_task_list;
 
-    new_task_list->tasks = (int*) calloc(max_count, sizeof(task_t));
+    new_task_list->tasks = (task_t*) calloc(max_count, sizeof(task_t));
     new_task_list->task_count = 0;
     new_task_list->max_count = max_count;
 
@@ -59,12 +62,9 @@ task_list_t *new_task_list(int max_count)
 void delete_task_list(task_list_t *task_list)
 {
     // Delete all tasks from memory
-    for (int i = 0; i < task_list->task_count; i++) {
-        free(task_list->tasks[i]);
-    }
+    free(task_list->tasks);
 
     // Delete task lists
-    free(task_list->tasks);
     free(task_list);
 
     return;
@@ -106,7 +106,7 @@ void list_tasks(task_list_t *task_list, short status)
     printf(" Num\tCheck\tPri\tTo do\n\n");
 
     for (int i = 0; i < task_list->task_count; i++) {
-       if (task_list->tasks[i]->active &&
+       if (task_list->tasks[i].active &&
             (task_list->tasks[i].checked >= status)){
 
             printf("%3d\t[", i);
@@ -164,7 +164,7 @@ int add_task_to_list(task_t *task, task_list_t *task_list)
     }
 
     // Add task to list
-    task_list->tasks[task_list->task_count] = task;
+    task_list->tasks[task_list->task_count] = *task;
     task_list->task_count++;
 
     return 0;
@@ -173,27 +173,25 @@ int add_task_to_list(task_t *task, task_list_t *task_list)
 void cleanup_task_list(task_list_t *task_list)
 {
     // Create a new empty task list
-    task_list_t *new_task_list = new_task_list(task_list->max_count);
+    task_list_t *clean_task_list = new_task_list(task_list->max_count);
 
     // Copy the active tasks into the new task list
     // Skip and delete from memory inactive tasks
     int j = 0;
     for (int i = 0; task_list->task_count; i++) {
         if(task_list->tasks[i].active) {
-            new_task_list->tasks[j] = task_list->tasks[i];
+            clean_task_list->tasks[j] = task_list->tasks[i];
             j++;
-        } else {
-            free(task_list->tasks[i]);
         }
     }
     // Set task count appropriately in new list
-    new_task_list->task_count = j;
+    clean_task_list->task_count = j;
 
     // Delete old task list from memory
-    free(task_list);
+    delete_task_list(task_list);
 
     // Make new task list the actual
-    task_list = new_task_list;
+    task_list = clean_task_list;
 
     return;
 }
