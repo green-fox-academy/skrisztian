@@ -89,13 +89,13 @@ void delete_student(student_t *student)
 
 int main()
 {
+    char subjects[][10] = {"MATH", "HISTORY", "ENGLISH", "SCIENCE"};
+
     student_t *paul = new_student("Paul Smith", 16);
     set_grade(paul, MATH, 3);
     set_grade(paul, HISTORY, 1);
     set_grade(paul, ENGLISH, 3);
     set_grade(paul, SCIENCE, 2);
-
-    char subjects[][10] = {"MATH", "HISTORY", "ENGLISH", "SCIENCE"};
 
     printf("Worst subject of %s: %s", paul->name, subjects[worst_subject(paul)]);
 
