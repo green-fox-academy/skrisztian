@@ -15,7 +15,7 @@ typedef struct {
 }task_t;
 
 typedef struct {
-    task_t *tasks;
+    task_t **tasks;
     int task_count;
     int max_count;
 }task_list_t;
@@ -25,6 +25,9 @@ task_t *new_task(char *description, int desc_size, short priority);
 
 // Flags a task as deleted. Does not remove it from memory.
 void delete_task(task_t *task);
+
+// Physically deletes a task from memory
+void destroy_task(task_t *task);
 
 // Prints a single task's type content for debugging
 void print_task(task_t *task);
@@ -37,6 +40,9 @@ task_list_t *new_task_list(int max_count);
 
 // Deletes task list from memory
 void delete_task_list(task_list_t *task_list);
+
+// Deletes task list and tasks from memory
+void destroy_task_list(task_list_t *task_list);
 
 // Prints usage info
 void print_usage(void);
@@ -61,6 +67,9 @@ int add_task_to_list(task_t *task, task_list_t *task_list);
 
 // Deletes physically from the list and from memory deleted tasks
 void cleanup_task_list(task_list_t *task_list);
+
+//Turns user input into array with command and parameters
+void process_command(char **command, char *user_input);
 
 
 #endif // TO_DO_APP_H_INCLUDED
