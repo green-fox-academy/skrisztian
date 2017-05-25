@@ -98,20 +98,28 @@ void destroy_task_list(task_list_t *task_list)
     return;
 }
 
-void print_usage(void)
+void print_usage(const char *message)
 {
+    clrscr();
     printf("                       Todo application\n");
     printf(" =================================================================\n");
     printf(" Commands:\n");
     printf("  -a \"task name\" <priority>    Adds a new task\n");
     printf("  -wr                          Write current todos to file\n");
     printf("  -rd                          Read todos from a file\n");
-    printf("  -l                           Lists all the tasks\n");
+    printf("  -l                           List all the tasks\n");
     printf("  -e                           Empty the list\n");
-    printf("  -r <task num>                Removes a task\n");
-    printf("  -c <task num>                Completes a task\n");
-    printf("  -p <priority>                Changes priority of a task\n");
-    printf("  -lp                          Lists all the tasks by priority\n");
+    printf("  -r <task num>                Remove a task\n");
+    printf("  -c <task num>                Complete a task\n");
+    printf("  -p <priority>                Change priority of a task\n");
+    printf("  -lp                          List all the tasks by priority\n");
+    printf("\n");
+    printf("  -x                           Exit from this application\n");
+    printf("\n");
+
+    if (message != NULL)
+        printf("%s\n", message);
+
     printf("\n");
     printf("Enter command: ");
 
@@ -130,8 +138,13 @@ void check_task(task_t *task)
 
 void list_tasks(task_list_t *task_list, short status)
 {
+    clrscr();
+
     // Header
+    printf("\n");
     printf(" Num\tCheck\tPri\tTo do\n");
+    printf("\n");
+    printf(" ------------------------------------\n");
     printf("\n");
 
     for (int i = 0; i < task_list->task_count; i++) {
@@ -139,7 +152,7 @@ void list_tasks(task_list_t *task_list, short status)
             (task_list->tasks[i]->checked >= status)){
 
             // Task number
-            printf("%3d\t[", i);
+            printf("%3d\t[", i +1);
 
             // [x] or [ ]
             if (task_list->tasks[i]->checked)
@@ -159,6 +172,8 @@ void list_tasks(task_list_t *task_list, short status)
             printf("\t%s\n", task_list->tasks[i]->todo);
         }
     }
+    printf("\n");
+    printf("Enter command: ");
     return;
 }
 
@@ -231,7 +246,7 @@ void cleanup_task_list(task_list_t *task_list)
     return;
 }
 
-void process_command(char **command, char *user_input)
+void process_command(char (*command)[256], char *user_input)
 {
     // Count double quotes
     int quotes = 0;
@@ -248,18 +263,40 @@ void process_command(char **command, char *user_input)
     // Get command letter
     char *token;
     token = strtok(user_input, " ");
-    command[0] = token;
+    if (token != NULL)
+        strcpy(command[0], token);
+    else
+        strcpy(command[0], "");
 
     // First parameter
     token = strtok(NULL, "\"");
-    command[1] = token;
+    if (token != NULL)
+        strcpy(command[1], token);
+    else
+        strcpy(command[1], "");
 
     // Second parameter
     token = strtok(NULL, " ");
-    command[2] = token;
+    if (token != NULL)
+        strcpy(command[2], token);
+    else
+        strcpy(command[2], "");
 
     return;
 }
+
+void debug_command(char *command)
+{
+    printf("*****\n");
+    printf("* 0 - command: %s\n", command[0]);
+    printf("* 1 - param 1: %s\n", command[1]);
+    printf("* 2 - param 2: %s\n", command[2]);
+    printf("* 3 - quotes: %s\n", command[3]);
+    printf("*****\n");
+
+    return;
+}
+
 
 /**************************************
 TODO:

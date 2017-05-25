@@ -3,84 +3,134 @@
 #include <string.h>
 #include "to_do_app.h"
 
+// Global variables are defined in to_do_app.h
+
 int main()
 {
     // Setup variables
-    const int max_tasks = 10;
+    const int max_task = 10;
     const int max_char = 256;
+
     int priority;
     char user_input[max_char];
-    char user_input_cpy[max_char];
-    char *command[4];
+    char command[4][256];
 
     // Create empty task list
-    task_list_t *list_of_tasks = new_task_list(max_tasks);
+    task_list_t *list_of_tasks;
+    list_of_tasks = new_task_list(max_task);
 
-    // Start
-    print_usage();
-    gets(user_input);
-    strcpy(user_input_cpy, user_input);
-    process_command(command, user_input);
+    // Set start parameter
+    strcpy(command[0], "");
+    //command[0] = NULL;
 
-    // Do action based on command
+    while(1) {
+        // Start
+        if (strcmp(command[0], "") == 0) {
+            print_usage(NULL);
+            gets(user_input);
+            process_command(command, user_input);
+            // debug_command(command);
 
-    // Do we have a valid command formatting?
-    if (command[0][0] != '-') {
-        // FIXME
-        printf("\"%s\" is a not a valid, properly formatted command.\n", user_input_cpy);
-    } else {
+        // Do we have a valid command formatting?
+        } else if (command[0][0] != '-') {
+            print_usage("This was not a valid or properly formatted command");
+            gets(user_input);
+            process_command(command, user_input);
 
-        // Add new task with priority
-        if (strcmp(command[0], "-a") == 0)  {
+        // Actions
+        } else {
 
-            // If we have don't have 2 double quotes, the message cannot be interpreted
-            if (atoi(command[3]) != 2) {
-                // FIXME
-                printf("\"%s\" is a not a valid, properly formatted command. Mind your double quotes!\n", user_input_cpy);
-            } else {
+            // Add new task with priority
+            if (strcmp(command[0], "-a") == 0)  {
 
-                // Set priority to 0 if nothing given
-                if (command[2] == NULL) {
-                    priority = 0;
+                // If we have don't have 2 double quotes, the message cannot be interpreted
+                if (atoi(command[3]) != 2) {
+                    print_usage("No task created. Mind your double quotes!");
+                    gets(user_input);
+                    process_command(command, user_input);
+
                 } else {
-                    priority = atoi(command[3]);
+
+                    // Set priority to 0 if nothing given
+                    if (strcmp(command[2], "") == 0) {
+                        priority = 0;
+                    } else {
+                        priority = atoi(command[2]);
+                    }
+
+                    // Create the task
+                    task_t *task = new_task(command[1], max_char, priority);
+
+                    // Return error if task list is full
+                    if (add_task_to_list(task, list_of_tasks) == 1) {
+                        print_usage("No task created. Your task list is full.");
+                        gets(user_input);
+                        process_command(command, user_input);
+
+                    // Add was successful
+                    } else {
+                        print_usage("Task added.");
+                        gets(user_input);
+                        process_command(command, user_input);
+                    }
                 }
 
-                // Create the task
-                task_t *task = new_task(command[1], max_char, priority);
+            // Write list to file
+            } else if (strcmp(command[0], "-wr") == 0) {
+                // FIXME
+                ;
 
-                // Add task to task list. Return error if task list is full
-                if (add_task_to_list(task, list_of_tasks) == 1) {
-                    // FIXME
-                    printf("Cannot add new task, your task list is full.\n");
-                }
+            // Read list from file
+            } else if (strcmp(command[0], "-rd") == 0) {
+                // FIXME
+                ;
 
+            // List all the tasks
+            } else if (strcmp(command[0], "-l") == 0) {
+                list_tasks(list_of_tasks, ALL);
+                gets(user_input);
+                process_command(command, user_input);
+
+            // Empty task list
+            } else if (strcmp(command[0], "-e") == 0) {
+
+                // Delete the list, initialize a new one
+                destroy_task_list(list_of_tasks);
+                list_of_tasks = new_task_list(max_task);
+
+                print_usage("Task list emptied. No todos for today! :)");
+                gets(user_input);
+                process_command(command, user_input);
+
+            } else if (strcmp(command[0], "-r") == 0) {
+
+                // FIXME
+
+            } else if (strcmp(command[0], "-c") == 0) {
+
+                // FIXME
+
+            } else if (strcmp(command[0], "-p") == 0) {
+
+                // FIXME
+
+            } else if (strcmp(command[0], "-lp") == 0) {
+
+                // FIXME
+
+            // Exit from application
+            } else if (strcmp(command[0], "-x") == 0) {
+                clrscr();
+                break;
+
+            // For every other comment give an error
+            } else {
+                print_usage("This was not a valid or properly formatted command");
+                gets(user_input);
+                process_command(command, user_input);
             }
-        } else if (strcmp(command[0], "-wr") == 0) {
-            // FIXME
-            ;
-        } else if (strcmp(command[0], "-rd") == 0) {
-            // FIXME
-            ;
-        } else if (strcmp(command[0], "-l") == 0) {
-            // FIXME
-            ;
-        } else if (strcmp(command[0], "-e") == 0) {
-            // FIXME
-            ;
         }
     }
-
-
-/*
-
-
-    printf("command: %s\n", command[0]);
-    printf("param 1: %s\n", command[1]);
-    printf("param 2: %s\n", command[2]);
-    printf("quotes: %s\n", command[3]);
-
-*/
 
     return 0;
 }

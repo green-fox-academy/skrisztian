@@ -44,8 +44,8 @@ void delete_task_list(task_list_t *task_list);
 // Deletes task list and tasks from memory
 void destroy_task_list(task_list_t *task_list);
 
-// Prints usage info
-void print_usage(void);
+// Prints usage info, with message
+void print_usage(const char *message);
 
 // Checks or un-checks a task
 void check_task(task_t *task);
@@ -69,7 +69,10 @@ int add_task_to_list(task_t *task, task_list_t *task_list);
 void cleanup_task_list(task_list_t *task_list);
 
 //Turns user input into array with command and parameters
-void process_command(char **command, char *user_input);
+void process_command(char command[][256], char *user_input);
+
+// Prints the content of the command buffer for debugging
+void debug_command(char *command);
 
 
 #endif // TO_DO_APP_H_INCLUDED
