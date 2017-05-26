@@ -270,7 +270,7 @@ int main()
                 clrscr();
                 break;
 
-            // For every other comment give an error
+            // For every other command give an error
             } else {
                 print_usage("This was not a valid or properly formatted command.");
                 gets(user_input);
