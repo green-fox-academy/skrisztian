@@ -45,19 +45,22 @@
 
 volatile uint8_t state = 255;
 volatile uint8_t enabled = 0;
-//volatile unsigned uint8_t port_status = 0;
 
 ISR(PCINT0_vect)
 {
-	
-	// Set enable on button down
-//	port_status = PINB;
-	
-	if (PINB) {
-		enabled = 1;
-		state = 0;
-		// initialize timer
-		TCNT1 = 0;
+	// Start/reset on PB7 button press
+	if (PINB & (1 << PINB7)) {
+		switch (state) {
+		case 255:	// start timer
+			enabled = 1;	
+			state = 0;
+			TCNT1 = 0; // initialize timer counter
+			break;
+		default:	// reset timer
+			enabled = 0;
+			state = 255;
+			break;
+		}	
 	}
 }
 
@@ -102,13 +105,13 @@ uint8_t timer_init(void)
 
 uint8_t button_init(void)
 {
-	// Set the PCINT7 bit of PCMSK0 register. This will enable the interrupts from the button (PB7=PCINT7)
+	// Enable interrupts on PCINT7 (PB7)
 	PCMSK0 |= 1 << PCINT7;
 
-	// Enable pin interrupt on change 0 interrupts. This will enable PCINT0, PCINT1, PCINT2 ... PCINT7 interrupts.
-	PCICR |=  1 << PCINT0;
+	// Enable interrupts on pin group 0 (PCINT0-7)
+	PCICR |=  1 << PCIE0;
 
-	// Finally, enable the interrupts globally
+	// Enable global interrupts
 	sei();
 	
 	return 0;
@@ -190,12 +193,12 @@ int main(void)
 	
 	while (1) {
 		
-		// Get ready: all green
+		// After reset, all blue
 		if (state == 255) {
 			leds[0] = 0xff;
 			leds[1] = 0x00;
-			leds[2] = 0xff;
-			leds[3] = 0x00;
+			leds[2] = 0x00;
+			leds[3] = 0xff;
 			show_leds(leds);
 
 		// Overtime, flashing red
@@ -212,7 +215,7 @@ int main(void)
 			leds[3] = 0x00;
 			show_leds(leds);
 			_delay_ms(500);
-			
+
 		// Timer in operation
 		} else {
 
