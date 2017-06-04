@@ -41,6 +41,5 @@ int main()
     printf("\n");
     printf("Float: %f\n", float_num);
 
-
     return 0;
 }
