@@ -8,9 +8,9 @@
 // GTM2088RGB - 8x8 common cathode (-)
 
 // SN74HC595N
-// 14 SER - PC2 - DATA_PIN
-// 12 RCLK - PC1 - LATCH_PIN
-// 11 SRCLK - PC0 - CLOCK_PIN
+// 14 SER - PC2 - DATA_PIN - yellow
+// 12 RCLK - PC1 - LATCH_PIN - green
+// 11 SRCLK - PC0 - CLOCK_PIN - orange
 
 // LED matrix pin layout
 // 1-8 BLUE
