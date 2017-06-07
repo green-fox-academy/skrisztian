@@ -41,7 +41,7 @@ void TWI_start(void)
 void TWI_stop(void)
 {
 	//Send stop signal
-	TWCR = (1<<TWSTO) | (1<<TWEN); // | (1<<TWINT); // | (1<<TWEN) | 
+	TWCR = (1<<TWSTO) | (1<<TWEN); 
 }
 
 uint8_t TWI_read_ack(void)
@@ -113,11 +113,24 @@ uint8_t read_temperature(uint8_t device_address)
 	// Set Stop condition
 	TWI_stop();
 	
+	// Negative numbers are stored as 2 complementers
+	if (temperature > 127) {
+		temperature--;
+		temperature = ~temperature;
+	}
+	
 	return temperature;
 }
 
-//TODO Advanced:
 //Calculate the average of the last 16 data, and returns with that.
+float avg_temperature(uint8_t device_address)
+{
+	uint16_t total = 0;
+	for (uint8_t i = 0; i < 16; i++) {
+		total += read_temperature(device_address);
+	}
+	return ((float) total / 16.0);
+}
 
 //TODO Advanced+:
 //Select the outstanding (false data) before average it.
