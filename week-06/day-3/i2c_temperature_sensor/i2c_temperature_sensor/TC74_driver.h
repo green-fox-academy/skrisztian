@@ -18,6 +18,6 @@ void TWI_write(uint8_t u8data);
 void TWI_stop(void);
 uint8_t TWI_read_nack(void);
 uint8_t TWI_read_ack(void);
-uint8_t read_temperature(uint8_t device_address);
+int8_t read_temperature(uint8_t device_address);
 
 #endif // _TC74_DRIVER_H

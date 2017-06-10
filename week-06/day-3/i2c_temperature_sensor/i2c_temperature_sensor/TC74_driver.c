@@ -90,7 +90,7 @@ void TWI_write(uint8_t u8data)
 //The function need to take the address of the ic as a parameter.
 //datasheet: http://ww1.microchip.com/downloads/en/DeviceDoc/21462D.pdf
 //And it returns with the temperature.
-uint8_t read_temperature(uint8_t device_address)
+int8_t read_temperature(uint8_t device_address)
 {
 	// Set start condition
 	TWI_start();
@@ -125,11 +125,11 @@ uint8_t read_temperature(uint8_t device_address)
 //Calculate the average of the last 16 data, and returns with that.
 float avg_temperature(uint8_t device_address)
 {
-	uint16_t total = 0;
+	float total = 0;
 	for (uint8_t i = 0; i < 16; i++) {
 		total += read_temperature(device_address);
 	}
-	return ((float) total / 16.0);
+	return total / 16.0;
 }
 
 //TODO Advanced+:

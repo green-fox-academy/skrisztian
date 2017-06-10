@@ -5,8 +5,11 @@
 
 ISR(USART_RX_vect)
 {
-	// Put received character into the circular buffer
-	*(rx_buffer.write_ptr) = UDR0;
+	// Put the received character into char buffer
+	char_buffer = UDR0;
+
+	// Copy received character into the circular buffer
+	*(rx_buffer.write_ptr) = char_buffer;
 
 	// Increment the write ptr
 	// Be aware that the write ptr might point to the end of the buffer.
@@ -15,7 +18,9 @@ ISR(USART_RX_vect)
 		rx_buffer.write_ptr = rx_buffer.head;
 	else
 		rx_buffer.write_ptr++;
-
+		
+	// Set flag, so we can read the buffer now
+	read_buffer = 1;
 }
 
 void UART_init()
@@ -45,6 +50,8 @@ void UART_init()
 	rx_buffer.tail = &(rx_buffer.buffer[RX_CIRC_BUFF_LEN - 1]);
 	rx_buffer.read_ptr = rx_buffer.head;
 	rx_buffer.write_ptr = rx_buffer.head;
+	
+	read_buffer = 0;
 }
 
 void UART_send_character(char character)

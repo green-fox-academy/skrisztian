@@ -14,6 +14,9 @@ volatile struct circular_buffer
 	volatile char *read_ptr;
 } rx_buffer;
 
+volatile uint8_t read_buffer;
+volatile char char_buffer;
+
 void UART_init();
 void UART_send_character(char character);
 char UART_get_character();
