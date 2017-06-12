@@ -12,6 +12,7 @@
 #include "pwm_timer.h"
 #include "ADC_driver.h"
 #include "UART_driver.h"
+#include "p_utils.h"
 
 
 #ifndef F_CPU
@@ -40,6 +41,8 @@ int main(void)
 	UART_Init();
 	PIN_PORT_LED |= 1 << PIN_LED;
 	
+	sei();
+	
 	// Setting up STDIO input and output buffer
 	// You don't have to understand this!
 	//----- START OF STDIO IO BUFFER SETUP
@@ -53,11 +56,32 @@ int main(void)
 	printf("Startup...\r\n");
 
 	uint8_t read_data;
+	char command[100];
+	// scanf("%s", command);
+	
 	
 	while(1) {
-		read_data = ADC_Read() >> 2;
-		set_duty_cycle_a(read_data);
-		printf("%d\r\n", read_data);
+		
+		uint16_t number;
+		
+		gets(command);
+		number = atoi(command);
+		
+		if (number) {
+			if ((number <= 100) && (number >= 0)) {
+				set_duty_cycle_p(number);
+				printf("Set to %d %%\n", number);
+			} else {
+				printf("Number %d is out of range\n", number);
+			}
+		}
+		
+		
+		// remove_trailing_nl(command);
+			
+		// read_data = ADC_Read() >> 2;
+		// set_duty_cycle_a(read_data);
+		// printf("%d\r\n", read_data);
 
 	}
 
