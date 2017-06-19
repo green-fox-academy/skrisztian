@@ -8,16 +8,31 @@ void remove_trailing_nl(char *string)
 	return;
 }
 
-// Returns with 1 if the given string is a number
-// otherwise returns with zero (e.g. mix of numbers and letters)
+// Returns with 1 if the given string is a number (integer or float)
+// otherwise returns with 0 (i.e. string is a mix of numbers and letters).
+// Also allows leading plus or minus signs and one decimal point
 uint8_t is_number(char *string)
 {
 	uint8_t not_digit = 0;
+	uint8_t point_count = 0;
+
 	for (uint8_t i = 0; i < strlen(string); i++) {
+
+		// Skip leading + or - sign
+		if ((i == 0) && ((string[i] == '-') || (string[i] == '+')))
+			i++;
+
+		// Skip first (decimal) point
+		if ((string[i] == '.') && (point_count == 0)) {
+			point_count++;
+			i++;
+		}
+
 		not_digit += (!isdigit(string[i]));
 	}
 	return (!not_digit);
 }
+
 
 // Prints floating point number to stdout
 // up to the given decimals

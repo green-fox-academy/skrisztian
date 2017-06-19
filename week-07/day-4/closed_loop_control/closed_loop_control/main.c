@@ -15,6 +15,8 @@
 #include <avr/io.h>
 #include <stdio.h>
 #include <avr/interrupt.h>
+#include <string.h>
+#include <stdlib.h>
 
 #ifndef F_CPU
 #define F_CPU 16000000UL
@@ -50,14 +52,27 @@ void system_init()
 int main(void)
 {
 	uint16_t measure_adc;
-	uint8_t control_type = CLOSED_LOOP_PI;
+	uint8_t control_type = CLOSED_LOOP_PID;
 	float err = 0;
 	float P = 0;
 	float I = 0;
+	float D = 0;
 	float ref = 0;
 	float process_variable = 0;
 	float ctrler_out = 0;
 	float integral = 0;
+	float dt = 0;
+	float previous_err = 0;
+	float derivative = 0;
+	char buffer[100];
+	uint8_t debug = 0;
+	uint8_t ref_type = 0;
+	
+	P = 0.10;
+	I = 0.001;
+	D = 0.02;
+	dt = 30;	// ms
+	
 
 	// Don't forget to call the init function :)
 	system_init();
@@ -71,19 +86,22 @@ int main(void)
 	stdin = &UART_input;
 	//----- END OF STDIO IO BUFFER SETUP
 
-	// Try printf
-	printf("Startup...\r\n");
+	if (debug) {
+		// Try printf
+		printf("Startup...\r\n");
 	
-	// Try print_float
-	const float pi = 3.14159265359;
-	print_float(pi, 5);
-	printf("\n");
+		// Try print_float
+		const float pi = 3.14159265359;
+		print_float(pi, 5);
+		printf("\n");
+	}
 
 	// Infinite loop
 	while (1) {
 
 		// Set reference RPM with potmeter		
-		ref = (MAX_RPM / 1023.0) * (float) ADC_read_avg(10);
+		if (ref_type == 0)
+			ref = (MAX_RPM / 1023.0) * (float) ADC_read_avg(10);
 
 		// Controller
 		switch (control_type) {
@@ -107,106 +125,97 @@ int main(void)
 			printf(" RPM\n");
 			
 			break; // END OPEN_LOOP	
-			
-		case CLOSED_LOOP_P:
-
-			/* Pseudo-code
-			 * err = ref - process_variable;
-			 * ctrler_out = P * err;
-			 * 
-			 * if (ctrler_out < ctrler_out_min)
-			 * ctrler_out = ctrler_out_min;
-			 * else if (ctrler_out > ctrler_out_max)
-			 * ctrler_out = ctrler_out_max;
-			 */
-			
-			P = 60;
-			
-			// Flash LED so we see it's working
-			LED_PIN |= 1 << LED_PIN_POS;
-			_delay_ms(10);
-
-			// Calculate error signal
-			process_variable = get_rpm();
-			err = ref - process_variable;
-			
-			// Set output control signal
-			ctrler_out = P * err;
-			
-			// Set saturation values
-			if (ctrler_out < 0.0)
-				ctrler_out = 0;
-			else if (ctrler_out > 255.0)
-				ctrler_out = 255;
-			
-			// Set PWM duty cycle
-			set_duty_cycle_a((uint8_t) ctrler_out);
 		
-			break; // END CLOSED_LOOP_P
-			
-		case CLOSED_LOOP_PI:
-			
-			/* Pseudo code
-			 * err = ref - process_variable;
-			 * integral = integral + err;
-			 * ctrler_out = P * err + I * integral;
-			 *
-			 * if (ctrler_out < ctrler_out_min) {
-			 *	ctrler_out = ctrler_out_min;
-			 *	integral = integral - err;
-			 * }
-			 * else if (ctrler_out > ctrler_out_max) {
-			 * 	ctrler_out = ctrler_out_max;
-			 *	integral = integral - err;
-			 * }
-			 */
-
-			P = 0.1;
-			I = 0.01;
+		case CLOSED_LOOP_PID:
 			
 			// Flash LED so we see it's working
 			LED_PIN |= 1 << LED_PIN_POS;
-			_delay_ms(10);
+			_delay_ms(dt);
 
 			// Calculate error signal
 			process_variable = get_rpm();
 			err = ref - process_variable;
-			integral = integral + err;
+			integral = integral + err * dt;
+			derivative = (err - previous_err) / dt;
+			previous_err = err;
 			
 			// Set output control signal
-			ctrler_out = P * err + I * integral;
+			ctrler_out = P * err + I * integral + D * derivative;
 			
 			// Set saturation values
 			if (ctrler_out < 0.0) {
 				ctrler_out = 0;
-				integral = integral - err;
+				integral = integral - err * dt;
 			} else if (ctrler_out > 255.0) {
 				ctrler_out = 255;
-				integral = integral - err;
+				integral = integral - err * dt;
 			}
 			
 			// Set PWM duty cycle
 			set_duty_cycle_a((uint8_t) ctrler_out);
 			
-			break; // END CLOSED_LOOP_PI
+			break; // END CLOSED_LOOP_PID
 
 		} // END switch
 		
-		// Print data on UART
-		// printf("P: ");
-		// print_float(P, 3);
-		// printf("\tI: ");
-		// print_float(I, 3);
-		printf("Ref: ");
-		print_float(ref, 3);
-		// printf("\terr: ");
-		// print_float(err, 3);
-		// printf("\tintegral: ");
-		// print_float(integral, 3);
-		// printf("\tPWM: %d\t", (uint8_t) ctrler_out);
-		printf("\t");
-		print_float(process_variable, 3);
-		printf(" RPM\n");
+		// Print debug data on UART
+		if (debug) {
+			printf("P: ");
+			print_float(P, 3);
+			printf("\tI: ");
+			print_float(I, 3);
+			printf("\tD: ");
+			print_float(D, 3);
+			printf("\tRef: ");
+			print_float(ref, 3);
+			printf("\terr: ");
+			print_float(err, 3);
+			printf("\tintegral: ");
+			print_float(integral, 3);
+			printf("\tderivative: ");
+			print_float(derivative, 3);
+			printf("\tPWM: %d\t\t", (uint8_t) ctrler_out);
+			print_float(process_variable, 3);
+			printf(" RPM\n");
+		} else {
+			// Print charting data on UART
+			// print_float(ref, 3);
+			// printf(" ");
+			// print_float(process_variable, 3);
+			// printf("\n");
+			printf("%d %d\n", (uint16_t) ref, (uint16_t) process_variable);
+		}
+		
+		
+		// Read data from UART
+		if (!UART_is_buffer_empty()) {
+			gets(buffer);
+			char *c;
+			char command;
+			c = strtok(buffer, " =");
+			command = c[0];
+			c = strtok(NULL, " =");
+			
+			switch (command) {
+			case 'p':
+				P = (float) atof(c);
+				break;
+			case 'i':
+				I = (float) atof(c);
+				break;
+			case 'd':
+				D = (float) atof(c);
+				break;
+			case 't':
+				ref_type = (uint8_t) atoi(c);
+				break;
+			case 'r':
+				ref = (float) atof(c);
+				break;	
+			}
+
+		}
+		
 		
 	} // END while
 }

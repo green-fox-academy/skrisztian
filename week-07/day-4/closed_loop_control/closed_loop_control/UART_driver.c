@@ -83,7 +83,7 @@ char UART_get_character()
 uint8_t UART_is_buffer_empty()
 {
 	if (rx_buffer.read_ptr == rx_buffer.write_ptr)
-	return 1;
+		return 1;
 	else
-	return 0;
+		return 0;
 }

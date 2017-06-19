@@ -36,8 +36,7 @@ float get_rpm()
 	
 	if (freq == -1) {
 		return previous_rpm;
-	}
-	else {
+	} else {
 		float rpm = (freq / 7) * 60;
 		previous_rpm = rpm;
 		return rpm;
