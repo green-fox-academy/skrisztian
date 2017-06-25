@@ -93,12 +93,43 @@ void HAL_MspDeInit(void)
 
 void HAL_TIM_PWM_MspInit(TIM_HandleTypeDef *htim)
 {
-	//TODO
+	GPIO_InitTypeDef GPIO_InitStruct;
+
+	__HAL_RCC_TIM3_CLK_ENABLE();
+	__HAL_RCC_GPIOB_CLK_ENABLE();
+
+	// ConfigureGPIO
+	GPIO_InitStruct.Pin = GPIO_PIN_4;
+	GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+	GPIO_InitStruct.Pull = GPIO_NOPULL;
+	GPIO_InitStruct.Alternate = GPIO_AF2_TIM3;
+	GPIO_InitStruct.Speed = GPIO_SPEED_HIGH;
+	HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 }
 
 void HAL_TIM_IC_MspInit(TIM_HandleTypeDef *htim)
 {
+	// *** Input capture - D9 PA15 TIM2_CH1 ***
+
 	//TODO
+	GPIO_InitTypeDef GPIO_InitStruct;
+
+	__HAL_RCC_TIM2_CLK_ENABLE();
+	__HAL_RCC_GPIOA_CLK_ENABLE();
+
+	// Init Interrupts
+	HAL_NVIC_SetPriority(TIM2_IRQn, 0, 0);
+	HAL_NVIC_EnableIRQ(TIM2_IRQn);
+
+	// ConfigureGPIO
+	GPIO_InitStruct.Pin = GPIO_PIN_15;
+	GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+	GPIO_InitStruct.Pull = GPIO_NOPULL;
+	GPIO_InitStruct.Alternate = GPIO_AF1_TIM2;
+	// GPIO_InitStruct.Speed = GPIO_SPEED_HIGH;
+
+	// Init GPIO pin
+	HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 }
 
 void HAL_ADC_MspInit(ADC_HandleTypeDef *adch)

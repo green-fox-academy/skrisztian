@@ -60,10 +60,15 @@ typedef struct {
 
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
-static ADC_HandleTypeDef adc_handle;
-static ADC_ChannelConfTypeDef adc_ch_conf;
-static uint32_t adc_timeout;
-static uint32_t adc_value;
+static ADC_HandleTypeDef adc3_handle;
+static ADC_ChannelConfTypeDef adc3_ch_conf;
+static TIM_HandleTypeDef tim3_handle;
+static TIM_OC_InitTypeDef tim3_oc_conf;
+static TIM_HandleTypeDef tim2_handle;
+static TIM_IC_InitTypeDef tim2_ic_conf;
+static uint16_t adc_timeout;
+static uint16_t adc_value;
+
 
 
 /* Private function prototypes -----------------------------------------------*/
@@ -71,6 +76,7 @@ static void SystemClock_Config(void);
 static void Error_Handler(void);
 static void MPU_Config(void);
 static void CPU_CACHE_Enable(void);
+static void set_pwm_value_a(uint16_t pwm_value);
 
 /* Private functions ---------------------------------------------------------*/
 
@@ -113,26 +119,73 @@ int main(void)
   BSP_LCD_Clear(LCD_COLOR_BLACK);
   BSP_LED_Init(LED_GREEN);
 
-  // ADC - A0 PA0 ADC3_IN0
-  adc_handle.Instance = ADC3;
-  adc_handle.Init.ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV2;
-  adc_handle.Init.ContinuousConvMode = DISABLE;
-  adc_handle.Init.Resolution = ADC_RESOLUTION_12B;
+  //*** ADC - A0 PA0 ADC3_IN0 ***
+  adc3_handle.Instance = ADC3;
+  adc3_handle.Init.ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV2;
+  adc3_handle.Init.ContinuousConvMode = DISABLE;
+  adc3_handle.Init.Resolution = ADC_RESOLUTION_12B;
 
-  adc_ch_conf.Channel = ADC_CHANNEL_0;
-  adc_ch_conf.SamplingTime = ADC_SAMPLETIME_480CYCLES;
-  //adc_ch_conf.Offset = 0;
-  //adc_ch_conf.Rank = 1;
+  adc3_ch_conf.Channel = ADC_CHANNEL_0;
+  adc3_ch_conf.SamplingTime = ADC_SAMPLETIME_480CYCLES;
 
   adc_timeout = 100;	// ms
 
-  // Init low level resources
-  HAL_ADC_Init(&adc_handle);
+  // Init ADC
+  HAL_ADC_Init(&adc3_handle);
 
-  // Init ADC;
-  HAL_ADC_ConfigChannel(&adc_handle, &adc_ch_conf);
+  // Configure ADC channels;
+  HAL_ADC_ConfigChannel(&adc3_handle, &adc3_ch_conf);
 
   BSP_LCD_DisplayStringAtLine(1, (uint8_t *)"Startup");
+
+  // *** PWM - D3 PB4 TIM3_CH1 ***
+  tim3_handle.Instance = TIM3;
+  tim3_handle.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  tim3_handle.Init.CounterMode = TIM_COUNTERMODE_UP;
+  tim3_handle.Init.Period = 4095;
+  tim3_handle.Init.Prescaler = 0;
+
+  tim3_oc_conf.OCMode = TIM_OCMODE_PWM1;
+  tim3_oc_conf.OCFastMode = TIM_OCFAST_DISABLE;
+  tim3_oc_conf.Pulse = 2047;
+  tim3_oc_conf.OCPolarity = TIM_OCPOLARITY_HIGH;
+
+  	// Init PWM
+	HAL_TIM_PWM_Init(&tim3_handle);
+
+	// Configure PWM channel
+	HAL_TIM_PWM_ConfigChannel(&tim3_handle, &tim3_oc_conf, TIM_CHANNEL_1);
+
+	// Start PWM
+	HAL_TIM_PWM_Start(&tim3_handle, TIM_CHANNEL_1);
+
+
+	// *** Input capture - D9 PA15 TIM2_CH1 ***
+	tim2_handle.Instance = TIM2;
+	tim2_handle.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+	tim2_handle.Init.CounterMode = TIM_COUNTERMODE_UP;
+	tim2_handle.Init.Period = 0xffff;
+	tim2_handle.Init.Prescaler = 0;
+	tim2_handle.Channel = HAL_TIM_ACTIVE_CHANNEL_1;
+	tim2_handle.State = HAL_TIM_STATE_RESET;
+
+	tim2_ic_conf.ICFilter = 0; // number between 0x0 and 0xf
+	tim2_ic_conf.ICPolarity = TIM_ICPOLARITY_RISING;
+	tim2_ic_conf.ICPrescaler = TIM_ICPSC_DIV1;	// input captured every 1 rising edge
+	tim2_ic_conf.ICSelection = TIM_ICSELECTION_DIRECTTI;
+
+	// Init IC timer
+	HAL_TIM_IC_Init(&tim2_handle);
+
+	// Config IC timer
+	HAL_TIM_IC_ConfigChannel(&tim2_handle, &tim2_ic_conf, TIM_CHANNEL_1);
+
+	// Start normal and IC timer
+	HAL_TIM_Base_Start_IT(&tim2_handle);
+	HAL_TIM_IC_Start_IT(&tim2_handle, TIM_CHANNEL_1);
+
+
+
 
   int8_t cntr = 0;
   /* Infinite loop */
@@ -141,13 +194,14 @@ int main(void)
 	  char buff[100];
 
 	  // Start ADC conversion
-	  HAL_ADC_Start(&adc_handle);
+	  HAL_ADC_Start(&adc3_handle);
 
 	  // Wait for ADC poll to finish
-	  HAL_ADC_PollForConversion(&adc_handle, adc_timeout);
+	  HAL_ADC_PollForConversion(&adc3_handle, adc_timeout);
 
 	  // Read ADC conversion value
-	  adc_value = HAL_ADC_GetValue(&adc_handle);
+	  adc_value = HAL_ADC_GetValue(&adc3_handle);
+	  set_pwm_value_a(adc_value);
 
 	  // Print out value
 	  sprintf(buff, "%d", adc_value);
@@ -160,7 +214,35 @@ int main(void)
   }
 } // END of main
 
+void TIM2_IRQHandler(void)
+{
+	HAL_TIM_IRQHandler(&tim2_handle);
+}
 
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+{
+	// Normal timer interrupt
+	// flash led
+}
+
+void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim)
+{
+	// Input capture timer interrupt
+}
+
+
+
+void set_pwm_value_a(uint16_t pwm_value)
+{
+	if (pwm_value > 4095)
+		pwm_value = 4095;
+
+	tim3_oc_conf.Pulse = pwm_value;
+	HAL_TIM_PWM_ConfigChannel(&tim3_handle, &tim3_oc_conf, TIM_CHANNEL_1);
+	HAL_TIM_PWM_Start(&tim3_handle, TIM_CHANNEL_1);
+
+	return;
+}
 
 
 /**
