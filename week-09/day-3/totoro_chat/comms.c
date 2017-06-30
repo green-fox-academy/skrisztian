@@ -68,10 +68,9 @@ void message_listener(void)
     // Set up a SOCKADDR_IN structure that will tell bind that we
     // want to listen for connections on all interfaces using the given port
 
-    int port = m_port;                                  // Set port to message port
     SOCKADDR_IN server_addr;
     server_addr.sin_family = AF_INET;                   // IPv4
-    server_addr.sin_port = htons(port);                 // host-to-network byte order
+    server_addr.sin_port = htons(m_port);               // set port to message listener port
     server_addr.sin_addr.s_addr = htonl(INADDR_ANY);    // Listen on all interface, host-to-network byte order
 
     // Bind the server address info to the socket created
@@ -120,7 +119,7 @@ void message_listener(void)
         new_connection = accept(listening_socket, (SOCKADDR*) &client_addr, &client_addr_size);
         if (new_connection < 0) {
             server_log(service, "error with accept(), cannot connect to client. ", WSAGetLastError());
-            break;
+
         } else {
             server_log(service, "accept() is OK.", 0);
         }
@@ -182,10 +181,9 @@ void discovery_listener(void)
     // Set up a SOCKADDR_IN structure that will tell bind that we
     // want to listen for connections on all interfaces using the given port
 
-    int port = d_port;                                  // Set port to discovery port
     SOCKADDR_IN server_addr;
     server_addr.sin_family = AF_INET;                   // IPv4
-    server_addr.sin_port = htons(port);                 // host-to-network byte order
+    server_addr.sin_port = htons(d_port);               // discovery listener port
     server_addr.sin_addr.s_addr = htonl(INADDR_ANY);    // Listen on all interface, host-to-network byte order
 
     // Bind the server address info to the socket created
@@ -280,7 +278,7 @@ void broadcast_listener(void)
     char service[20] = "brc_listener";
 
     // Create a new socket to listen for client connections.
-    SOCKET listening_socket = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
+    SOCKET listening_socket = socket(AF_INET, SOCK_DGRAM, 0);
 
     // Check for errors to ensure that the socket is a valid socket.
     if (listening_socket == INVALID_SOCKET) {
