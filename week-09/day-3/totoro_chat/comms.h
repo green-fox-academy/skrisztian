@@ -5,6 +5,7 @@
 #include "logging.h"
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 
 
@@ -16,10 +17,15 @@ int d_port; // discovery receiving port
 int b_port; // broadcast receiving port
 char hostname[255];
 
-int run_msg_server;
+int init_winsock(void);
+int close_winsock(void);
 
+void broadcast_listener(void);
+void message_listener(void);
+void discovery_listener(void);
 
-void broadcast_server(void);
+int send_msg(char* remmote_ip, int remote_port, char* message);
+int send_broadcast(int remote_port);
 
 #endif // COMMS_H_INCLUDED
 

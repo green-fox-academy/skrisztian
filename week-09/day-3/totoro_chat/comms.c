@@ -1,15 +1,16 @@
 #include "comms.h"
-
-
+#include <stdlib.h>
+#include "p_utils.h"
 
 /*
  * This file contains the communications related functions
  * e.g. server, client, etc.
  */
 
-void message_server(void)
+int init_winsock(void)
 {
-    char service[20] = "msg_server";
+
+    char service[20] = "winsock";
 
     // Initialize winsock
     WSADATA ws_data;    // winsock version
@@ -19,9 +20,35 @@ void message_server(void)
 
     // Start winsock with error checking
     if (WSAStartup(ws_ver, &ws_data) != 0) {
-        server_log(service, "WSAStartup failed with error: ", WSAGetLastError());
-        return;
+        int error = WSAGetLastError();
+        server_log(service, "WSAStartup failed with error: ", error);
+        return error;
+    } else {
+        server_log(service, "WSAStartup OK.", 0);
     }
+
+    return 0;
+}
+
+int close_winsock(void)
+{
+    char service[20] = "winsock";
+
+    // Close winsock
+    if (WSACleanup() != 0) {
+       int error = WSAGetLastError();
+        server_log(service, "WSACleanup failed with error: ", error);
+        return error;
+    } else {
+        server_log(service, "WSAStartup OK.", 0);
+    }
+
+    return 0;
+}
+
+void message_listener(void)
+{
+    char service[20] = "msg_server";
 
     // Create a new socket to listen for client connections.
     SOCKET listening_socket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
@@ -31,7 +58,6 @@ void message_server(void)
         server_log(service, "Error at socket(), error code: ", WSAGetLastError());
 
         // Clean up, exit
-        WSACleanup();
         return;
 
     // Socket started fine
@@ -55,7 +81,6 @@ void message_server(void)
 
         // Close socket, clean up, exit
         closesocket(listening_socket);
-        WSACleanup();
         return;
 
     } else {
@@ -73,7 +98,6 @@ void message_server(void)
 
         // Close, cleanup, exit
         closesocket(listening_socket);
-        WSACleanup();
         return;
 
     } else {
@@ -90,7 +114,7 @@ void message_server(void)
     char recvbuff[1024];
     int bytes_received;
 
-    while(run_msg_server) {
+    while(1) {
 
         // Build up connection with client
         new_connection = accept(listening_socket, (SOCKADDR*) &client_addr, &client_addr_size);
@@ -107,17 +131,8 @@ void message_server(void)
         // When there is data
         if (bytes_received > 0) {
 
-            // FIXME write sender IP or name too
-            for(int i =0; i < bytes_received; i++) {
-                printf("%c", recvbuff[i]);
-                log_msg[i] = recvbuff[i];
-            }
-
-            printf("\"\n");
-
-            char msg_buffer[255] = "received:";
-            strcat(msg_buffer, recvbuff);
-            server_log(service, msg_buffer, 0);
+            printf("message_listener>%s\n", recvbuff);
+            server_log(service, recvbuff, 0);
         }
 
         // Clean up all the send/receive communication, get ready for new one
@@ -142,31 +157,12 @@ void message_server(void)
     else
         server_log(service, "Closing server socket.", 0);
 
-    // Close winsock
-    if (WSACleanup() != 0) {
-        server_log(service, "WSACleanup failed with error: ", WSAGetLastError());
-    } else {
-        printf("msg_server > WSACleanup() is OK.", 0);
-    }
-
     return;
 }
 
-void discovery_server(void)
+void discovery_listener(void)
 {
     char service[20] = "dsc_server";
-
-    // Initialize winsock
-    WSADATA ws_data;    // winsock version
-    WORD ws_ver;        // pointer to winsock version related data
-
-    ws_ver = MAKEWORD(2, 2);   // Set version to 2.2
-
-    // Start winsock with error checking
-    if (WSAStartup(ws_ver, &ws_data) != 0) {
-        server_log(service, "WSAStartup failed with error: ", WSAGetLastError());
-        return;
-    }
 
     // Create a new socket to listen for client connections.
     SOCKET listening_socket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
@@ -176,7 +172,6 @@ void discovery_server(void)
         server_log(service, "Error at socket(), error code: ", WSAGetLastError());
 
         // Clean up, exit
-        WSACleanup();
         return;
 
     // Socket started fine
@@ -200,7 +195,6 @@ void discovery_server(void)
 
         // Close socket, clean up, exit
         closesocket(listening_socket);
-        WSACleanup();
         return;
 
     } else {
@@ -218,7 +212,6 @@ void discovery_server(void)
 
         // Close, cleanup, exit
         closesocket(listening_socket);
-        WSACleanup();
         return;
 
     } else {
@@ -235,7 +228,7 @@ void discovery_server(void)
     char recvbuff[1024];
     int bytes_received;
 
-    while(run_msg_server) {
+    while(1) {
 
         // Build up connection with client
         new_connection = accept(listening_socket, (SOCKADDR*) &client_addr, &client_addr_size);
@@ -247,22 +240,14 @@ void discovery_server(void)
         }
 
         // Client is connected, ready to receive data
+        memset(recvbuff, 0, sizeof(recvbuff));
         bytes_received = recv(new_connection, recvbuff, sizeof(recvbuff), 0);
 
         // When there is data
         if (bytes_received > 0) {
 
-            // FIXME write sender IP or name too
-            for(int i =0; i < bytes_received; i++) {
-                printf("%c", recvbuff[i]);
-                log_msg[i] = recvbuff[i];
-            }
-
-            printf("\"\n");
-
-            char msg_buffer[255] = "received:";
-            strcat(msg_buffer, recvbuff);
-            server_log(service, msg_buffer, 0);
+           printf("discovery_listener>%s\n", recvbuff);
+           server_log(service, recvbuff, 0);
         }
 
         // Clean up all the send/receive communication, get ready for new one
@@ -287,41 +272,19 @@ void discovery_server(void)
     else
         server_log(service, "Closing server socket.", 0);
 
-    // Close winsock
-    if (WSACleanup() != 0) {
-        server_log(service, "WSACleanup failed with error: ", WSAGetLastError());
-    } else {
-        printf("msg_server > WSACleanup() is OK.", 0);
-    }
-
     return;
 }
 
-void broadcast_server(void)
+void broadcast_listener(void)
 {
-    char service[20] = "brc_server";
-
-    // Initialize winsock
-    WSADATA ws_data;    // winsock version
-    WORD ws_ver;        // pointer to winsock version related data
-
-    ws_ver = MAKEWORD(2, 2);   // Set version to 2.2
-
-    // Start winsock with error checking
-    if (WSAStartup(ws_ver, &ws_data) != 0) {
-        server_log(service, "WSAStartup failed with error: ", WSAGetLastError());
-        return;
-    }
+    char service[20] = "brc_listener";
 
     // Create a new socket to listen for client connections.
-    SOCKET listening_socket = socket(AF_INET, SOCK_DGRAM, 0);
+    SOCKET listening_socket = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
 
     // Check for errors to ensure that the socket is a valid socket.
     if (listening_socket == INVALID_SOCKET) {
         server_log(service, "Error at socket(), error code: ", WSAGetLastError());
-
-        // Clean up, exit
-        WSACleanup();
         return;
 
     // Socket started fine
@@ -332,10 +295,9 @@ void broadcast_server(void)
     // Set up a SOCKADDR_IN structure that will tell bind that we
     // want to listen for connections on all interfaces using the given port
 
-    int port = m_port;                                  // Set port to message port
     SOCKADDR_IN server_addr;
     server_addr.sin_family = AF_INET;                   // IPv4
-    server_addr.sin_port = htons(port);                 // host-to-network byte order
+    server_addr.sin_port = htons(b_port);               // host-to-network byte order
     server_addr.sin_addr.s_addr = htonl(INADDR_ANY);    // Listen on all interface, host-to-network byte order
 
     // Bind the server address info to the socket created
@@ -345,7 +307,6 @@ void broadcast_server(void)
 
         // Close socket, clean up, exit
         closesocket(listening_socket);
-        WSACleanup();
         return;
 
     } else {
@@ -359,19 +320,37 @@ void broadcast_server(void)
 
         SOCKADDR_IN client_addr;                // client's IP address
         int client_addr_size = sizeof(client_addr);
-        char recvbuff[1024];
+        char recvbuff[1024] = "";
 
         int message = recvfrom(listening_socket, recvbuff, strlen(recvbuff) + 1, 0, (SOCKADDR*) &client_addr, &client_addr_size);
         if(message == -1) {
-            server_log(service, "bind() failed! Error code: ", WSAGetLastError());
+            server_log(service, "Received failed! Error code: ", WSAGetLastError());
         } else {
             // FIXME
             // implement function to react to arrived broadcast message
 
-            char msg_buffer[1024] = "received:";
-            strcat(msg_buffer, recvbuff);
-            server_log(service, msg_buffer, 0);
+            server_log(service, recvbuff, 0);
             printf("discovery-server> received from %s %d %s\n", inet_ntoa(client_addr.sin_addr), client_addr.sin_port, recvbuff);
+
+            // Get sender's data
+            char *token;
+
+            token = strtok(recvbuff, " ");
+
+            if (strcmp(token, "TOTORO")) {
+                token = strtok(NULL, " ");
+                printf("port: %s\n", token);
+
+                char m_port_s[10];
+                itoa(m_port, m_port_s, 10);
+
+                // Send out message to discovery port
+                char msg_to_send[] = "";
+                strcmp(msg_to_send, hostname);
+                strcat(msg_to_send, " ");
+                strcat(msg_to_send, m_port_s);
+                send_msg(inet_ntoa(client_addr.sin_addr), atoi(token), msg_to_send);
+            }
         }
     } // END while
 
@@ -381,111 +360,132 @@ void broadcast_server(void)
     else
         server_log(service, "Closing server socket.", 0);
 
-    // Close winsock
-    if (WSACleanup() != 0) {
-        server_log(service, "WSACleanup failed with error: ", WSAGetLastError());
-    } else {
-        printf("msg_server > WSACleanup() is OK.", 0);
-    }
-
     return;
 }
 
 
 
 
-int client(void)
+int send_msg(char* remote_ip, int remote_port, char* message)
 {
-
-    const char ip_address[] = "127.0.0.1";  // remote address
-    int port = 54000;                       // remote port
-
-    // Initialize winsock
-    WSADATA ws_data;    // winsock version
-    WORD ws_ver;        // pointer to winsock version related data
-
-    ws_ver = MAKEWORD(2, 2);   // Set version to 2.2
-
-    // Start winsock with error checking
-    if (WSAStartup(ws_ver, &ws_data) != 0) {
-        printf("WSAStartup failed with error %d\n", WSAGetLastError());
-        return 1;
-    }
+    char service[20] = "send_msg";
 
     // Create a new socket for sending
     SOCKET client_socket = socket(AF_INET, SOCK_STREAM, 0);
 
     // Check for errors to ensure that the socket is a valid socket.
     if (client_socket == INVALID_SOCKET) {
-        printf("Client: Error at socket(), error code: %d\n", WSAGetLastError());
-
-        // Clean up, exit
-        WSACleanup();
-        return 1;
-
+        server_log(service, "Client: Error at socket(), error code: %d\n", WSAGetLastError());
+        return -1;
     } else {
-        printf("Client: socket() is OK!\n");
+        server_log(service, "Client: socket() is OK", 0);
     }
 
     // Create a client interface structure
     SOCKADDR_IN client_if;
-    client_if.sin_family = AF_INET;     // IPv4
-    client_if.sin_addr.s_addr = inet_addr(ip_address);
-    client_if.sin_port = htons(port);
+    client_if.sin_family = AF_INET;
+    client_if.sin_addr.s_addr = inet_addr(remote_ip);
+    client_if.sin_port = htons(remote_port);
 
     // Connect to server
     int connection_result = connect(client_socket, (SOCKADDR*) &client_if, sizeof(client_if));
     if (connection_result == SOCKET_ERROR) {
 
         // On error close socket, cleanup and exit
+        server_log(service, "Cannot connect to server. Error ", WSAGetLastError());
         printf("Cannot connect to server. Error %d\n", WSAGetLastError());
         closesocket(client_socket);
-        WSACleanup();
-        return 1;
+        return -2;
     }
 
-    char buff[4096];
-    char user_input[255];
+    char buff[1200];
+
+    // Send data
+    int send_result = send(client_socket, message, strlen(message), 0);
+
+    // Prepare for logging
+    char temp1[1024] = "";
+    strcat(temp1, remote_ip);
+    char temp2[10];
+    itoa(remote_port, temp2, 10);
+    strcat(temp1, " ");
+    strcat(temp1, temp2);
+    strcat(temp1, " ");
+    strcat(temp1, message);
+
+    // Check error
+    if (send_result != SOCKET_ERROR) {
+        printf("sent msg: >%s< to %s %d\n", message, remote_ip, remote_port);
+        server_log(service, temp1, 0);
+    } else {
+        int error = WSAGetLastError();
+        printf("Error sending msg: >%s< to %s %d, error: %d\n", message, remote_ip, remote_port, error);
+        server_log(service, temp1, error);
+    }
+    // Close socket
+    closesocket(client_socket);
+
+    return 0;
+}
+
+int send_broadcast(int remote_port)
+{
+    const char ip_address[] = "255.255.255.255";    // remote address
+    char service[20] = "broadcast_client";
+
+    // Create a new socket for sending
+    SOCKET client_socket = socket(AF_INET, SOCK_DGRAM, 0);
+
+    // Check for errors to ensure that the socket is a valid socket.
+    if (client_socket == INVALID_SOCKET) {
+        server_log(service, "Error at socket(), error code: ", WSAGetLastError());
+        // Clean up, exit
+        return 1;
+
+    } else {
+        server_log(service, "socket() is OK.", 0);
+    }
+
+    // Create a client interface structure
+    SOCKADDR_IN client_if;
+    client_if.sin_family = AF_INET;     // IPv4
+
+    // Create remote interface structure
+    SOCKADDR_IN remote_address;
+    remote_address.sin_family = AF_INET;
+    remote_address.sin_addr.s_addr = inet_addr(ip_address);
+    remote_address.sin_port = htons(remote_port);
+
+    // Set socket to broadcast
+    int opt_val = 1;
+    int opt_len = sizeof(int);
+    setsockopt(client_socket, SOL_SOCKET, SO_BROADCAST, (char*) &opt_val, opt_len);
+
+    // Construct message
+    char temp[20];
+    itoa(d_port, temp, 10);     // convert discovery port number to string
+    char broadcast_msg[100] = "TOTORO ";
+    strcat(broadcast_msg, temp);
 
     // Send and receive data
-    do {
-        printf("client tx>");
-        gets(user_input);
+    int send_result = sendto(client_socket, broadcast_msg, strlen(broadcast_msg), 0, (SOCKADDR*) &remote_address, sizeof(remote_address));
 
-        // Make sure user entered some text
-        if (strlen(user_input) > 0) {
+    // Log error
+    if (send_result == SOCKET_ERROR) {
+        server_log(service, "Error sending UDP message: ", WSAGetLastError());
+        printf("Error sending UDP message: %d\n", WSAGetLastError());
 
-            // Send message to server
-            int send_result = send(client_socket, user_input, strlen(user_input), 0);
-
-            // If no error, wait for response
-            if (send_result != SOCKET_ERROR) {
-                memset(&buff, 0, sizeof(buff));
-                int bytes_received = recv(client_socket, buff, 4096, 0);
-
-                // Echo to console
-                if (bytes_received > 0) {
-                    printf("client rx>");
-                    for (int i = 0; i < bytes_received; i++) {
-                        printf("%c", buff[i]);
-                    }
-                    printf("<\n");
-                }
-
-            // Handle error
-            } else {
-                ;; //TODO
-            }
-        }
-
-    // After empty line stop sending
-    } while (strlen(user_input) > 0);
+    } else {
+        printf("UDP sent: %s\n", broadcast_msg);
+    }
 
     // Close socket
     closesocket(client_socket);
 
     return 0;
 }
+
+
 
 /*
         // Some info on the receiver side...
