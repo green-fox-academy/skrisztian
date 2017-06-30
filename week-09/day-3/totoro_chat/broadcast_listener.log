@@ -1,0 +1,4 @@
+broadcast_listener> socket() is OK! 0
+broadcast_listener> bind() is OK! 0
+broadcast_listener> Waiting for transmissions. 0
+broadcast_listener> TOTORO 54000 0

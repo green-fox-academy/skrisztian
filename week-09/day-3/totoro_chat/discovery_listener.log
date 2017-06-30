@@ -1,0 +1,9 @@
+discovery_listener> socket() is OK! 0
+discovery_listener> bind() is OK! 0
+discovery_listener> listen() is OK, I'm waiting for connections. 0
+discovery_listener> accept() is ready. 0
+discovery_listener> accept() is OK. 0
+discovery_listener> krisz 54001 0
+discovery_listener> Closing client's socket. 0
+discovery_listener> error with accept(), cannot connect to client.  10004
+discovery_listener> Cannot close server socket. Error code:  10093

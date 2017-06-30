@@ -6,8 +6,20 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdint.h>
 
+// Structure to store individual client's data
+typedef struct {
+    char name[255];
+    int32_t ip;
+    int m_port;
+} client_t;
 
+// Array to store all clients's data structures
+client_t clients[50];
+
+// Counter for array
+int client_count;
 
 
 // Host data
@@ -24,8 +36,9 @@ void broadcast_listener(void);
 void message_listener(void);
 void discovery_listener(void);
 
-int send_msg(char* remmote_ip, int remote_port, char* message);
+int send_msg(int32_t remmote_ip, int remote_port, char* message);
 int send_broadcast(int remote_port);
+int save_user(char *name, int32_t remote_ip, int remote_port);
 
 #endif // COMMS_H_INCLUDED
 

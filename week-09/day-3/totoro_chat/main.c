@@ -8,23 +8,11 @@
 #include "logging.h"
 #include "userfunctions.h"
 
-// Structure to store individual client's data
-typedef struct {
-    char name[255];
-    char ip[20];
-    int m_port;
-} client_t;
-
-// Array to store all clients's data structures
-client_t clients[50];
-
-// Counter for array
-int client_count;
 
 
 
-// File names
-char server_log_file_name[255];
+
+
 char hostname_file_name[255];
 char user_data_file_name[255];
 
@@ -43,6 +31,24 @@ int main()
 
     char command;
 
+    // Open log files
+    strcpy(broadcast_listener_log_file_name, "broadcast_listener.log");
+    bl_log_fp = fopen(broadcast_listener_log_file_name, "w+");
+
+    strcpy(discovery_listener_log_file_name, "discovery_listener.log");
+    dl_log_fp = fopen(discovery_listener_log_file_name, "w+");
+
+    strcpy(message_listener_log_file_name, "message_listener.log");
+    ml_log_fp = fopen(message_listener_log_file_name, "w+");
+
+    strcpy(message_sender_log_file_name, "message_sender.log");
+    ms_log_fp = fopen(message_sender_log_file_name, "w+");
+
+    strcpy(broadcast_sender_log_file_name, "broadcast_sender.log");
+    bs_log_fp = fopen(broadcast_sender_log_file_name, "w+");
+
+    strcpy(winsock_log_file_name, "winsock.log");
+    w_log_fp = fopen(winsock_log_file_name, "w+");
 
 
     int winsock_error = init_winsock();
@@ -72,9 +78,18 @@ int main()
             break;
         case 'x':
             close_winsock();
-
-
+            fclose(bl_log_fp);
+            fclose(dl_log_fp);
+            fclose(ml_log_fp);
+            fclose(ms_log_fp);
+            fclose(w_log_fp);
             return 0;
+            break;
+        case 'l':
+            list_clients();
+            break;
+        case 'm':
+            send_chat();
             break;
         }
     }

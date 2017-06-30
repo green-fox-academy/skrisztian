@@ -1,0 +1,2 @@
+winsock> WSAStartup OK. 0
+winsock> WSACleanup OK. 0

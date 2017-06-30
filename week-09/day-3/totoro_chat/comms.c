@@ -1,5 +1,6 @@
 #include "comms.h"
 #include <stdlib.h>
+#include <stdint.h>
 #include "p_utils.h"
 
 /*
@@ -40,7 +41,7 @@ int close_winsock(void)
         server_log(service, "WSACleanup failed with error: ", error);
         return error;
     } else {
-        server_log(service, "WSAStartup OK.", 0);
+        server_log(service, "WSACleanup OK.", 0);
     }
 
     return 0;
@@ -48,7 +49,7 @@ int close_winsock(void)
 
 void message_listener(void)
 {
-    char service[20] = "msg_server";
+    char service[20] = "message_listener";
 
     // Create a new socket to listen for client connections.
     SOCKET listening_socket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
@@ -100,7 +101,6 @@ void message_listener(void)
         return;
 
     } else {
-        log_msg[0] = '\0';
         server_log(service, "listen() is OK, I'm waiting for connections.", 0);
     }
 
@@ -117,37 +117,30 @@ void message_listener(void)
 
         // Build up connection with client
         new_connection = accept(listening_socket, (SOCKADDR*) &client_addr, &client_addr_size);
-        if (new_connection < 0) {
+        if (new_connection == INVALID_SOCKET) {
             server_log(service, "error with accept(), cannot connect to client. ", WSAGetLastError());
-
         } else {
             server_log(service, "accept() is OK.", 0);
         }
 
         // Client is connected, ready to receive data
         bytes_received = recv(new_connection, recvbuff, sizeof(recvbuff), 0);
+        recvbuff[bytes_received] = 0;
 
         // When there is data
         if (bytes_received > 0) {
 
             printf("message_listener>%s\n", recvbuff);
             server_log(service, recvbuff, 0);
-        }
 
-        // Clean up all the send/receive communication, get ready for new one
-        if(shutdown(new_connection, SD_SEND) != 0) {
-            server_log(service, "Error with shutdown(). Error code: ", WSAGetLastError());
-        } else {
-            server_log(service, "Connection shutdown() OK.", 0);
+            // When you are finished sending and receiving data on the
+            // NewConnection socket and are finished accepting new connections
+            // on ListeningSocket, you should close the sockets using the closesocket API.
+            if(closesocket(new_connection) != 0)
+                server_log(service, "Cannot close client's socket. Error code: ", WSAGetLastError());
+            else
+                server_log(service, "Closing client's socket.", 0);
         }
-
-        // When you are finished sending and receiving data on the
-        // NewConnection socket and are finished accepting new connections
-        // on ListeningSocket, you should close the sockets using the closesocket API.
-        if(closesocket(new_connection) != 0)
-            server_log(service, "Cannot close client's socket. Error code: ", WSAGetLastError());
-         else
-            server_log(service, "Closing client's socket.", 0);
      } // END while
 
     // Close listening socket
@@ -161,13 +154,13 @@ void message_listener(void)
 
 void discovery_listener(void)
 {
-    char service[20] = "dsc_server";
+    char service[20] = "discovery_listener";
 
     // Create a new socket to listen for client connections.
-    SOCKET listening_socket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+    SOCKET discovery_socket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 
     // Check for errors to ensure that the socket is a valid socket.
-    if (listening_socket == INVALID_SOCKET) {
+    if (discovery_socket == INVALID_SOCKET) {
         server_log(service, "Error at socket(), error code: ", WSAGetLastError());
 
         // Clean up, exit
@@ -188,11 +181,11 @@ void discovery_listener(void)
 
     // Bind the server address info to the socket created
     // Check for general errors.
-    if (bind(listening_socket, (SOCKADDR*) &server_addr, sizeof(server_addr)) == SOCKET_ERROR) {
+    if (bind(discovery_socket, (SOCKADDR*) &server_addr, sizeof(server_addr)) == SOCKET_ERROR) {
         server_log(service, "bind() failed! Error code: ", WSAGetLastError());
 
         // Close socket, clean up, exit
-        closesocket(listening_socket);
+        closesocket(discovery_socket);
         return;
 
     } else {
@@ -204,23 +197,22 @@ void discovery_listener(void)
     static const int backlog = 5;   // 5 is normal for many applications.
 
     // Listen for client connections.
-    if (listen(listening_socket, backlog) == SOCKET_ERROR) {
+    if (listen(discovery_socket, backlog) == SOCKET_ERROR) {
 
         server_log(service, "listen(): Error listening on socket: ", WSAGetLastError());
 
         // Close, cleanup, exit
-        closesocket(listening_socket);
+        closesocket(discovery_socket);
         return;
 
     } else {
-        log_msg[0] = '\0';
         server_log(service, "listen() is OK, I'm waiting for connections.", 0);
     }
 
     server_log(service, "accept() is ready.", 0);
 
     // Accept a new connection when one arrives.
-    SOCKET new_connection;
+    SOCKET discovery_connection;
     SOCKADDR_IN client_addr;                // client's IP address
     int client_addr_size = sizeof(client_addr);
     char recvbuff[1024];
@@ -229,8 +221,8 @@ void discovery_listener(void)
     while(1) {
 
         // Build up connection with client
-        new_connection = accept(listening_socket, (SOCKADDR*) &client_addr, &client_addr_size);
-        if (new_connection < 0) {
+        discovery_connection = accept(discovery_socket, (SOCKADDR*) &client_addr, &client_addr_size);
+        if (discovery_connection == INVALID_SOCKET) {
             server_log(service, "error with accept(), cannot connect to client. ", WSAGetLastError());
             break;
         } else {
@@ -238,34 +230,40 @@ void discovery_listener(void)
         }
 
         // Client is connected, ready to receive data
-        memset(recvbuff, 0, sizeof(recvbuff));
-        bytes_received = recv(new_connection, recvbuff, sizeof(recvbuff), 0);
+        bytes_received = recv(discovery_connection, recvbuff, sizeof(recvbuff), 0);
+        recvbuff[bytes_received] = 0;
 
         // When there is data
         if (bytes_received > 0) {
 
-           printf("discovery_listener>%s\n", recvbuff);
-           server_log(service, recvbuff, 0);
-        }
+            printf("discovery_listener>%s\n", recvbuff);
+            server_log(service, recvbuff, 0);
 
-        // Clean up all the send/receive communication, get ready for new one
-        if(shutdown(new_connection, SD_SEND) != 0) {
-            server_log(service, "Error with shutdown(). Error code: ", WSAGetLastError());
-        } else {
-            server_log(service, "Connection shutdown() OK.", 0);
-        }
+            // Get sender's data
+            char name[255];
+            char *token;
 
-        // When you are finished sending and receiving data on the
-        // NewConnection socket and are finished accepting new connections
-        // on ListeningSocket, you should close the sockets using the closesocket API.
-        if(closesocket(new_connection) != 0)
-            server_log(service, "Cannot close client's socket. Error code: ", WSAGetLastError());
-         else
-            server_log(service, "Closing client's socket.", 0);
+            token = strtok(recvbuff, " ");
+            strcpy(name, token);
+
+            token = strtok(NULL, " ");
+            int remote_port = atoi(token);
+            int32_t remote_ip = client_addr.sin_addr.s_addr;
+
+            save_user(name, remote_ip, remote_port);
+
+            // When you are finished sending and receiving data on the
+            // NewConnection socket and are finished accepting new connections
+            // on ListeningSocket, you should close the sockets using the closesocket API.
+            if(closesocket(discovery_connection) != 0)
+                server_log(service, "Cannot close client's socket. Error code: ", WSAGetLastError());
+             else
+                server_log(service, "Closing client's socket.", 0);
+        }
      } // END while
 
     // Close listening socket
-    if(closesocket(listening_socket) != 0)
+    if(closesocket(discovery_socket) != 0)
         server_log(service, "Cannot close server socket. Error code: ", WSAGetLastError());
     else
         server_log(service, "Closing server socket.", 0);
@@ -275,10 +273,10 @@ void discovery_listener(void)
 
 void broadcast_listener(void)
 {
-    char service[20] = "brc_listener";
+    char service[20] = "broadcast_listener";
 
     // Create a new socket to listen for client connections.
-    SOCKET listening_socket = socket(AF_INET, SOCK_DGRAM, 0);
+    SOCKET listening_socket = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
 
     // Check for errors to ensure that the socket is a valid socket.
     if (listening_socket == INVALID_SOCKET) {
@@ -296,7 +294,7 @@ void broadcast_listener(void)
     SOCKADDR_IN server_addr;
     server_addr.sin_family = AF_INET;                   // IPv4
     server_addr.sin_port = htons(b_port);               // host-to-network byte order
-    server_addr.sin_addr.s_addr = htonl(INADDR_ANY);    // Listen on all interface, host-to-network byte order
+    server_addr.sin_addr.s_addr = INADDR_ANY;    // Listen on all interface, host-to-network byte order
 
     // Bind the server address info to the socket created
     // Check for general errors.
@@ -318,37 +316,34 @@ void broadcast_listener(void)
 
         SOCKADDR_IN client_addr;                // client's IP address
         int client_addr_size = sizeof(client_addr);
-        char recvbuff[1024] = "";
+        char recvbuff[2048];
 
-        int message = recvfrom(listening_socket, recvbuff, strlen(recvbuff) + 1, 0, (SOCKADDR*) &client_addr, &client_addr_size);
-        if(message == -1) {
-            server_log(service, "Received failed! Error code: ", WSAGetLastError());
-        } else {
-            // FIXME
-            // implement function to react to arrived broadcast message
+        int message = recvfrom(listening_socket, recvbuff, 2048, 0, (SOCKADDR*) &client_addr, &client_addr_size);
+        recvbuff[message] = 0;
+        if(message > 0) {
 
             server_log(service, recvbuff, 0);
-            printf("discovery-server> received from %s %d %s\n", inet_ntoa(client_addr.sin_addr), client_addr.sin_port, recvbuff);
+            printf("%s> received from %s %d %s\n", service, inet_ntoa(client_addr.sin_addr), client_addr.sin_port, recvbuff);
 
             // Get sender's data
             char *token;
 
             token = strtok(recvbuff, " ");
 
-            if (strcmp(token, "TOTORO")) {
+            if (strcmp(token, "TOTORO") == 0) {
                 token = strtok(NULL, " ");
-                printf("port: %s\n", token);
-
                 char m_port_s[10];
                 itoa(m_port, m_port_s, 10);
 
                 // Send out message to discovery port
-                char msg_to_send[] = "";
-                strcmp(msg_to_send, hostname);
+                char msg_to_send[255];
+                strcpy(msg_to_send, hostname);
                 strcat(msg_to_send, " ");
                 strcat(msg_to_send, m_port_s);
-                send_msg(inet_ntoa(client_addr.sin_addr), atoi(token), msg_to_send);
+                send_msg(client_addr.sin_addr.s_addr, atoi(token), msg_to_send);
             }
+        } else {
+                    // server_log(service, "Received failed! Error code: ", WSAGetLastError());
         }
     } // END while
 
@@ -364,9 +359,9 @@ void broadcast_listener(void)
 
 
 
-int send_msg(char* remote_ip, int remote_port, char* message)
+int send_msg(int32_t remote_ip, int remote_port, char* message)
 {
-    char service[20] = "send_msg";
+    char service[20] = "message_sender";
 
     // Create a new socket for sending
     SOCKET client_socket = socket(AF_INET, SOCK_STREAM, 0);
@@ -382,7 +377,7 @@ int send_msg(char* remote_ip, int remote_port, char* message)
     // Create a client interface structure
     SOCKADDR_IN client_if;
     client_if.sin_family = AF_INET;
-    client_if.sin_addr.s_addr = inet_addr(remote_ip);
+    client_if.sin_addr.s_addr = remote_ip;
     client_if.sin_port = htons(remote_port);
 
     // Connect to server
@@ -402,8 +397,8 @@ int send_msg(char* remote_ip, int remote_port, char* message)
     int send_result = send(client_socket, message, strlen(message), 0);
 
     // Prepare for logging
-    char temp1[1024] = "";
-    strcat(temp1, remote_ip);
+    char temp1[1024];
+    strcat(temp1, inet_ntoa(client_if.sin_addr));
     char temp2[10];
     itoa(remote_port, temp2, 10);
     strcat(temp1, " ");
@@ -413,11 +408,11 @@ int send_msg(char* remote_ip, int remote_port, char* message)
 
     // Check error
     if (send_result != SOCKET_ERROR) {
-        printf("sent msg: >%s< to %s %d\n", message, remote_ip, remote_port);
-        server_log(service, temp1, 0);
+        printf("%s> \"%s\" to %s %d %d\n", service, message, inet_ntoa(client_if.sin_addr), remote_port, send_result);
+        server_log(service, temp1, send_result);
     } else {
         int error = WSAGetLastError();
-        printf("Error sending msg: >%s< to %s %d, error: %d\n", message, remote_ip, remote_port, error);
+        printf("Error sending msg: \"%s\" to %s %d, error: %d\n", message, inet_ntoa(client_if.sin_addr), remote_port, error);
         server_log(service, temp1, error);
     }
     // Close socket
@@ -429,7 +424,7 @@ int send_msg(char* remote_ip, int remote_port, char* message)
 int send_broadcast(int remote_port)
 {
     const char ip_address[] = "255.255.255.255";    // remote address
-    char service[20] = "broadcast_client";
+    char service[20] = "broadcast_sender";
 
     // Create a new socket for sending
     SOCKET client_socket = socket(AF_INET, SOCK_DGRAM, 0);
@@ -482,6 +477,55 @@ int send_broadcast(int remote_port)
 
     return 0;
 }
+
+int save_user(char *name, int32_t remote_ip, int remote_port)
+{
+    int save = 1;
+    for (int i = 0; i < client_count; i++) {
+        if ((clients[i].ip == remote_ip) && (strcmp(clients[i].name, name) == 0)) {
+            save = 0;
+        }
+    }
+
+    if (save) {
+        clients[client_count].ip = remote_ip;
+        clients[client_count].m_port = remote_port;
+        strcpy(clients[client_count].name, name);
+        client_count++;
+    }
+    return 0;
+}
+
+int list_clients(void)
+{
+    printf("Name\t\tIP address\t\tPort\n");
+    for (int i = 0; i < client_count; i++) {
+        SOCKADDR_IN temp_addr;
+        temp_addr.sin_addr.s_addr = clients[i].ip;
+        printf("%s\t\t%s\t\t%d\n", clients[i].name, inet_ntoa(temp_addr.sin_addr), clients[i].m_port);
+    }
+    return;
+}
+
+int send_chat()
+{
+    char user[255];
+    char msg[255];
+    printf("User name: ");
+    gets(user);
+    printf("Message: ");
+    gets(msg);
+
+    int user_exists = 0;
+    int index;
+    for (int i = 0; i < client_count; i++) {
+        if (strcmp(clients[i].name, user) == 0) {
+            send_msg(clients[i].ip, clients[i].m_port, msg);
+        }
+    }
+    return 0;
+}
+
 
 
 
