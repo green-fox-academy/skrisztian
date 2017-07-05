@@ -28,12 +28,15 @@ int init_winsock(void)
         server_log(service, "WSAStartup OK.", 0);
     }
 
+    winsock_up = 1;
+
     return 0;
 }
 
 int close_winsock(void)
 {
     char service[20] = "winsock";
+    winsock_up = 0;
 
     // Close winsock
     if (WSACleanup() != 0) {
@@ -130,7 +133,9 @@ void message_listener(void)
         // When there is data
         if (bytes_received > 0) {
 
-            printf("message_listener>%s\n", recvbuff);
+            // Print chat message
+            print_user(client_addr.sin_addr.s_addr);
+            printf("%s\n", recvbuff);
             server_log(service, recvbuff, 0);
 
             // When you are finished sending and receiving data on the
@@ -236,7 +241,7 @@ void discovery_listener(void)
         // When there is data
         if (bytes_received > 0) {
 
-            printf("discovery_listener>%s\n", recvbuff);
+            //printf("discovery_listener>%s\n", recvbuff);
             server_log(service, recvbuff, 0);
 
             // Get sender's data
@@ -322,9 +327,6 @@ void broadcast_listener(void)
         recvbuff[message] = 0;
         if(message > 0) {
 
-            server_log(service, recvbuff, 0);
-            printf("%s> received from %s %d %s\n", service, inet_ntoa(client_addr.sin_addr), client_addr.sin_port, recvbuff);
-
             // Get sender's data
             char *token;
 
@@ -335,6 +337,9 @@ void broadcast_listener(void)
                 char m_port_s[10];
                 itoa(m_port, m_port_s, 10);
 
+                server_log(service, recvbuff, 0);
+                // printf("%s> received from %s %d %s\n", service, inet_ntoa(client_addr.sin_addr), client_addr.sin_port, recvbuff);
+
                 // Send out message to discovery port
                 char msg_to_send[255];
                 strcpy(msg_to_send, hostname);
@@ -342,8 +347,6 @@ void broadcast_listener(void)
                 strcat(msg_to_send, m_port_s);
                 send_msg(client_addr.sin_addr.s_addr, atoi(token), msg_to_send);
             }
-        } else {
-                    // server_log(service, "Received failed! Error code: ", WSAGetLastError());
         }
     } // END while
 
@@ -469,7 +472,7 @@ int send_broadcast(int remote_port)
         printf("Error sending UDP message: %d\n", WSAGetLastError());
 
     } else {
-        printf("UDP sent: %s\n", broadcast_msg);
+        // printf("UDP sent: %s\n", broadcast_msg);
     }
 
     // Close socket
@@ -496,6 +499,14 @@ int save_user(char *name, int32_t remote_ip, int remote_port)
     return 0;
 }
 
+void print_user(int32_t remote_ip)
+{
+    for (int i = 0; i < client_count; i++) {
+        if (clients[i].ip == remote_ip)
+            printf("[%s] ", clients[i].name);
+    }
+}
+
 int list_clients(void)
 {
     printf("Name\t\tIP address\t\tPort\n");
@@ -516,8 +527,6 @@ int send_chat()
     printf("Message: ");
     gets(msg);
 
-    int user_exists = 0;
-    int index;
     for (int i = 0; i < client_count; i++) {
         if (strcmp(clients[i].name, user) == 0) {
             send_msg(clients[i].ip, clients[i].m_port, msg);

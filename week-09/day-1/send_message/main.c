@@ -220,8 +220,8 @@ int server(void)
 int client(void)
 {
 
-    const char ip_address[] = "127.0.0.1";  // remote address
-    int port = 54000;                       // remote port
+    const char ip_address[] = "10.27.6.41";  // remote address
+    int port = 54545;                       // remote port
 
     // Initialize winsock
     WSADATA ws_data;    // winsock version

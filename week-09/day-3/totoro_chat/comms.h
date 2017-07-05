@@ -31,10 +31,12 @@ char hostname[255];
 
 int init_winsock(void);
 int close_winsock(void);
+int winsock_up;
 
 void broadcast_listener(void);
 void message_listener(void);
 void discovery_listener(void);
+void print_user(int32_t remote_ip);
 
 int send_msg(int32_t remmote_ip, int remote_port, char* message);
 int send_broadcast(int remote_port);

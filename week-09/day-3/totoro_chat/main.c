@@ -8,15 +8,8 @@
 #include "logging.h"
 #include "userfunctions.h"
 
-
-
-
-
-
 char hostname_file_name[255];
 char user_data_file_name[255];
-
-
 
 int main()
 {
@@ -73,7 +66,7 @@ int main()
 
         command = getch();
         switch (command) {
-        case 'b':
+        case 'd':
             send_broadcast(b_port);
             break;
         case 'x':
@@ -90,6 +83,12 @@ int main()
             break;
         case 'm':
             send_chat();
+            break;
+        case 'h':
+            print_help();
+            break;
+        case 'c':
+            clrscr();
             break;
         }
     }
