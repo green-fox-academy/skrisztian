@@ -220,7 +220,7 @@ int server(void)
 int client(void)
 {
 
-    const char ip_address[] = "10.27.6.41";  // remote address
+    const char ip_address[] = "10.27.6.48";  // remote address
     int port = 54545;                       // remote port
 
     // Initialize winsock

@@ -1,0 +1,483 @@
+winsock> WSAStartup OK. 0
+udp_server> socket() is OK! 0
+udp_server> bind() is OK! 0
+udp_server> Waiting for UDP transmissions. 0
+udp_server> TP# U S 01 00000 005 Krisz # 0
+udp_server> TP# U S 01 00000 005 Krisz # 0
+udp_server> TP# U S 01 00000 005 Krisz # 0
+udp_server> TP# U S 01 00000 005 Krisz # 0
+udp_server> TP# U S 01 00000 005 Krisz # 0
+udp_server> TP# B P 01 124 254 122 251 002 -03 008 ff00ff # 0
+udp_server> TP# U S 01 00001 005 Krisz # 0
+udp_server> TP# B P 01 190 252 185 250 005 -06 010 ff00ff # 0
+udp_server> TP# U S 01 00001 005 Krisz # 0
+udp_server> TP# U S 01 00000 005 Krisz # 0
+udp_server> TP# U S 01 00000 005 Krisz # 0
+udp_server> TP# U S 01 00000 005 Krisz # 0
+udp_server> TP# U S 01 00000 005 Krisz # 0
+udp_server> TP# U S 01 00000 005 Krisz # 0
+udp_server> TP# U S 01 00000 005 Krisz # 0
+udp_server> TP# U S 01 00000 005 Krisz # 0
+udp_server> TP# U S 01 00000 005 Krisz # 0
+udp_server> TP# U S 01 00000 005 Krisz # 0
+udp_server> TP# B P 01 149 251 143 248 006 -03 011 ff00ff # 0
+udp_server> TP# B P 01 185 251 179 248 006 -03 011 ff00ff # 0
+udp_server> TP# U S 01 00002 005 Krisz # 0
+udp_server> TP# U S 01 00000 005 Krisz # 0
+udp_server> TP# U S 01 00000 005 Krisz # 0
+udp_server> TP# B P 01 147 251 146 246 001 -05 011 ff00ff # 0
+udp_server> TP# U S 01 00001 005 Krisz # 0
+udp_server> TP# U S 01 00000 005 Krisz # 0
+udp_server> TP# U S 01 00000 005 Krisz # 0
+udp_server> TP# U S 01 00000 005 Krisz # 0
+udp_server> TP# U S 01 00000 005 Krisz # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# B P 01 142 250 142 247 000 -05 012 ff00ff # 0
+udp_server> TP# U S 01 00000 007 Player1 # 0
+udp_server> TP#  0
+udp_server> TP# U S 01 00000 007 Player1 # 0
+udp_server> TP# B P 01 119 253 120 249 -01 -06 009 ff00ff # 0
+udp_server> TP# B P 01 037 253 038 249 -01 -06 009 ff00ff # 0
+udp_server> TP# B P 01 063 253 062 249 001 -06 009 ff00ff # 0
+udp_server> TP# U S 01 00003 007 Player1 # 0
+udp_server> TP# U S 01 00000 007 Player1 # 0
+udp_server> TP# B P 01 044 248 050 244 -06 -05 014 ff00ff # 0
+udp_server> TP# U S 01 00001 007 Player1 # 0
+udp_server> TP# U S 01 00000 007 Player1 # 0
+udp_server> TP# U S 01 00000 007 Player1 # 0
+udp_server> TP# U S 01 00000 007 Player1 # 0
+udp_server> TP# B P 01 058 253 051 249 007 -06 009 ff00ff # 0
+udp_server> TP# U S 01 00001 007 Player1 # 0
+udp_server> TP# U S 01 00000 007 Player1 # 0
+udp_server> TP# U S 01 00000 007 Player1 # 0
+udp_server> TP# U S 01 00000 007 Player1 # 0
+udp_server> TP# B P 01 046 248 045 242 001 -06 014 ff00ff # 0
+udp_server> TP# B P 01 124 248 123 242 001 -06 014 ff00ff # 0
+udp_server> TP# U S 01 00002 007 Player1 # 0
+udp_server> TP# U S 01 00000 007 Player1 # 0
+udp_server> TP# U S 01 00000 007 Player1 # 0
+udp_server> TP# U S 01 00000 007 Player1 # 0
+udp_server> TP# B P 01 083 253 082 249 001 -04 009 ff00ff # 0
+udp_server> TP# U S 01 00001 007 Player1 # 0
+udp_server> TP# U S 01 00000 007 Player1 # 0
+udp_server> TP# B P 01 051 252 055 250 -04 -03 010 ff00ff # 0
+udp_server> TP# U S 01 00001 007 Player1 # 0
+udp_server> TP# B P 01 118 249 118 247 000 -03 013 ff00ff # 0
+udp_server> TP# B P 01 118 249 118 247 000 -03 013 ff00ff # 0
+udp_server> TP# B P 01 118 249 118 247 000 -03 013 ff00ff # 0
+udp_server> TP# B P 01 118 249 118 247 000 -03 013 ff00ff # 0
+udp_server> TP# B P 01 118 249 118 247 000 -03 013 ff00ff # 0
+udp_server> TP# B P 01 118 249 118 247 000 -03 013 ff00ff # 0
+udp_server> TP# B P 01 118 249 118 247 000 -03 013 ff00ff # 0
+udp_server> TP# B P 01 118 249 118 247 000 -03 013 ff00ff # 0
+udp_server> TP# B P 01 118 249 118 247 000 -03 013 ff00ff # 0
+udp_server> TP# B P 01 118 249 118 247 000 -03 013 ff00ff # 0
+udp_server> TP# B P 01 118 249 118 247 000 -03 013 ff00ff # 0
+udp_server> TP# B P 01 118 249 118 247 000 -03 013 ff00ff # 0
+udp_server> TP# B P 01 118 249 118 247 000 -03 013 ff00ff # 0
+udp_server> TP# B P 01 118 249 118 247 000 -03 013 ff00ff # 0
+udp_server> TP# B P 01 118 249 118 247 000 -03 013 ff00ff # 0
+udp_server> TP# B P 01 118 249 118 247 000 -03 013 ff00ff # 0
+udp_server> TP# B P 01 118 249 118 247 000 -03 013 ff00ff # 0
+udp_server> TP# B P 01 118 249 118 247 000 -03 013 ff00ff # 0
+udp_server> TP# B P 01 118 249 118 247 000 -03 013 ff00ff # 0
+udp_server> TP# B P 01 118 249 118 247 000 -03 013 ff00ff # 0
+udp_server> TP# B P 01 118 249 118 247 000 -03 013 ff00ff # 0
+winsock> WSACleanup OK. 0
