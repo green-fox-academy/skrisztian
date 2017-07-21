@@ -1,0 +1,229 @@
+// Pins on board: en.DM00190424.pdf -> p. 23
+// HAL overview: en.DM00189702.pdf
+
+
+/*
+ * Create threads and thread communication
+ */
+
+// See also main.c
+ 
+static void StartThread(void const * argument)
+{ 
+
+	// MUTEX
+	// define service_mutex_id in the h where it will be called:
+	// osMutexId service_mutex_id;
+
+	osMutexDef(SERVICE_MUTEX_DEF);
+	service_mutex_id = osMutexCreate(osMutex(SERVICE_MUTEX_DEF));
+
+		// In the code where the MUTEX is used:
+		
+		// Wait for the mutex:
+		// osMutexWait(service_mutex_id, osWaitForever);
+		
+		// Do the job...
+		
+		// Release the mutex
+		// osMutexRelease(service_mutex_id);
+
+	// MESSAGE QUEUE
+	// define service_q_id in the h where it will be called:
+	// osMessageQId service_q_id; 
+	
+	osMessageQDef(SERVICE_Q_DEF, 1, uint32_t);
+	service_q_id = osMessageCreate(osMessageQ(SERVICE_Q_DEF), NULL);
+
+		// In the code where MSG_QUEUE is used:
+		
+		// Send message:
+		// osMessagePut(service_q_id, value, osWaitForever);
+		
+		// Receive message:
+		// osEvent evt = osMessageGet(service_q_id, osWaitForever);
+		// if (evt.status == osEventMessage) {
+		//     int get_value = evt.value.v;
+		// }
+
+	// Generic inits
+	
+	// Initialize LCD
+	BSP_Config();
+
+	// Create TCP/IP stack thread
+	tcpip_init(NULL, NULL);
+
+	// Initialize LwIP stack
+	Netif_Config();
+
+	// Notify user about the network interface config
+	User_notification(&gnetif);
+
+	// Start DHCPClient
+	osThreadDef(DHCP, DHCP_thread, osPriorityBelowNormal, 0, configMINIMAL_STACK_SIZE * 2);
+	osThreadCreate (osThread(DHCP), &gnetif);
+
+	// Wait for IP assignment
+	while(!is_ip_ok()) {
+	  osDelay(100);
+	}
+
+	// To be able to see IP address
+	osDelay(2000);
+
+	// Start socket server thread
+	osThreadDef(SOCKET_SERVER, socket_server_thread, osPriorityLow, 0, configMINIMAL_STACK_SIZE * 2);
+	osThreadCreate (osThread(SOCKET_SERVER), NULL);
+
+	// Start touch pad thread
+	osThreadDef(TOUCH, touch_thread, osPriorityLow, 0, configMINIMAL_STACK_SIZE * 2);
+	osThreadCreate (osThread(TOUCH), NULL);
+
+	// start other threads...
+	
+	// Close os thread
+	while (1) {
+		osThreadTerminate(NULL);
+	}
+}
+
+// ---------------------------------------------------------------------------------
+
+/*
+ *  ADC init and use
+ */
+
+// 1. Enable ADC in main.h -> ...hal.h -> ...hal_conf.h
+// 2. Include stm32f7xx_hal_adc.c in /Drivers/...HAL_Driver
+// 3. Include stm32f7xx_hal_adc_ex.c in /Drivers/...HAL_Driver
+// 4. Include stm32f7xx_hal_msp.c in /User
+// 5. Write the function HAL_ADC_MspInit in ...msp.c as below:
+ 
+void HAL_ADC_MspInit(ADC_HandleTypeDef* adch)
+{
+	// A3 Port F8 ADC3_IN6
+
+	GPIO_InitTypeDef GPIO_InitStruct;
+
+  // Enable peripherals and GPIO Clocks
+  __HAL_RCC_ADC3_CLK_ENABLE();
+  __HAL_RCC_GPIOF_CLK_ENABLE();
+
+  // Configure GPIO
+  GPIO_InitStruct.Pin = GPIO_PIN_8;
+  GPIO_InitStruct.Mode = GPIO_MODE_ANALOG;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_MEDIUM;
+
+  HAL_GPIO_Init(GPIOF, &GPIO_InitStruct);
+}
+
+// 6. Include and reconfig adc.c and adc.h
+
+// ------------------------------------------------------------------------------------
+
+/*
+ * GPIO Init and use
+ */
+ 
+ // Initialize the outputs
+void gpio_pin_init(void)
+{
+	/* Pin used:
+	 * D0 - PC7
+	 */
+
+	GPIO_TypeDef* port = GPIOC;
+	uint16_t pin = GPIO_PIN_7;
+
+	// Init GPIO clock
+	__HAL_RCC_GPIOC_CLK_ENABLE();
+
+	// ConfigureGPIOs' specific pins
+	// Loop if more than one pin
+	GPIO_InitTypeDef GPIO_InitStruct;
+	GPIO_InitStruct.Pin = pin;
+	GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP; // GPIO_MODE_INPUT;
+	GPIO_InitStruct.Pull = GPIO_NOPULL // GPIO_PULLUP / GPIO_PULLDOWN, BSP PB uses NOPULL
+	GPIO_InitStruct.Speed = GPIO_SPEED_HIGH;
+
+	// Init GPIO pin
+	HAL_GPIO_Init(port, &GPIO_InitStruct);
+
+	return;
+}
+ 
+// Use GPIO pins
+
+GPIO_PinState HAL_GPIO_ReadPin(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin);
+void HAL_GPIO_WritePin(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin, GPIO_PinState PinState);
+void HAL_GPIO_TogglePin(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin)é
+ 
+// ------------------------------------------------------------------------------------
+
+/*
+ * BSP Push button init and use
+ */
+
+// Make sure stm32746g_discoery.c is included in Drivers/BSP/STM32746G_Discovery
+ 
+MPU_Config();
+CPU_CACHE_Enable();
+HAL_Init();
+SystemClock_Config();
+
+
+// Initialize LED1
+BSP_LED_Init(LED_GREEN);
+
+// Initialize push button
+BSP_PB_Init(BUTTON_KEY, BUTTON_MODE_GPIO);
+
+
+while (1)
+{
+  // Light up LED while button is pressed
+  if (BSP_PB_GetState(BUTTON_KEY))
+	  BSP_LED_On(LED_GREEN);
+  else
+	  BSP_LED_Off(LED_GREEN);
+  }
+}
+
+// ------------------------------------------------------------------------------------
+
+/*
+ * BSP Touch screen init and use -> use touch.c
+ */
+
+// Initialize LCD */
+static void BSP_Config(void)
+{
+  /* Initialize the LCD */
+  BSP_LCD_Init();
+  
+  /* Initialize the LCD Layers */
+  BSP_LCD_LayerDefaultInit(1, LCD_FB_START_ADDRESS);
+  
+  /* Set LCD Foreground Layer  */
+  BSP_LCD_SelectLayer(1);
+  
+  BSP_LCD_SetFont(&LCD_DEFAULT_FONT);
+  
+  /* Initialize TS */
+  BSP_TS_Init(BSP_LCD_GetXSize(), BSP_LCD_GetYSize());
+
+  /* Initialize LCD Log module */
+  LCD_LOG_Init();
+  
+  /* Show Header and Footer texts */
+  LCD_LOG_SetHeader((uint8_t *)"LED matrix controller");
+  LCD_LOG_SetFooter((uint8_t *)"STM32746G-DISCO - GreenFoxAcademy");
+  
+  LCD_UsrLog ((char *)"Notification - Ethernet Initialization ...\n");
+}
+
+// ----------------------------------------------------------------------------------------
+
+// In Codeblocks remember to set ws2 for winsock in the linker

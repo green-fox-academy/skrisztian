@@ -1,0 +1,13 @@
+#ifndef __TCP_SERVER_H_INCLUDED
+#define __TCP_SERVER_H_INCLUDED
+
+#include logger.h
+
+#define TCP_SERVER_PORT			12345
+#define TCP_SERVER_QUEUE		5
+#define TCP_SERVER_BUFFER_LEN	1024
+
+
+
+
+#endif // __TCP_SERVER_H_INCLUDED
